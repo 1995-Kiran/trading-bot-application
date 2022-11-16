@@ -51,7 +51,7 @@ jobs:
         docker push -a $ECR_REGISTRY/$ECR_REPOSITORY
   
     - name: Update kube config
-      run: aws eks --region us-east-1 update-kubeconfig --name eks-fargate-demo
+      run: aws eks --region eu-west-1 update-kubeconfig --name eks-fargate-demo
 
     - name: Deploy image to Amazon EKS
       env:
