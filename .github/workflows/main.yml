@@ -60,4 +60,4 @@ jobs:
         IMAGE_TAG: ${{ github.sha }}
       run: |
          kubectl apply -f k8s/namespace.yaml
-         kubectl apply -f k8s/secondcommandtesting.yaml
+         kubectl apply -f k8s/TradeStreamProducer.yaml

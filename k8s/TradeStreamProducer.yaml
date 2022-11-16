@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: trade-stream-producer-deployment
+spec: 
+  replicas: 1
+  selector: 
+    matchLabels: 
+      app: trade-stream-producer
+  template: 
+    metadata: 
+      labels: 
+        app: trade-stream-producer
+    spec: 
+      containers: 
+        - 
+          # args: 
+            
+          command: 
+            - java
+            - '-Dpair=BTCUSDT'
+            - '-cp'
+            - 'kafkaStreams.jar'
+            - '-Dthread={ "class": "TradeStreamProducer", "params": {"bootstrapServers": "b-1.bayviewmsk.jdabnv.c2.kafka.ap-northeast-1.amazonaws.com:9092,b-2.bayviewmsk.jdabnv.c2.kafka.ap-northeast-1.amazonaws.com:9092", "pair": "BTCUSDT" } }'
+            - 'com.tradingbot.kafka.RunThread'
+          image: "126880002495.dkr.ecr.ap-northeast-1.amazonaws.com/test-ecr:v1"
+          name: trade-stream-producer
+          # resources:
+          #   requests:
+          #     memory: "256Mi"
+          #     cpu: "0.25"
+          #   limits:
+          #     memory: "256Mi"
+          #     cpu: "0.25"
+
