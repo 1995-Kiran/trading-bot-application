@@ -63,3 +63,28 @@ jobs:
       run: |
          kubectl apply -f k8s/namespace.yaml
          kubectl apply -f k8s/TradeStreamProducer.yaml
+
+
+
+
+
+    - name: deploy to cluster
+      uses: kodermax/kubectl-aws-eks@master
+      env:
+        KUBECTL_VERSION: "v1.22.0"
+        IAM_VERSION: "0.5.6"
+        KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        ECR_REPOSITORY: tradingbot-ecr
+        IMAGE_TAG: ${{ github.sha }}
+      with:
+        args: set image deployment/trade-stream-producer-deployment trade-stream-producer=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -n staging
+        
+    - name: verify deployment
+      uses: kodermax/kubectl-aws-eks@master
+      env:
+        KUBECTL_VERSION: "v1.22.0"
+        IAM_VERSION: "0.5.6"
+        KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
+      with:
+        args: rollout status deployment/trade-stream-producer-deployment -n staging
